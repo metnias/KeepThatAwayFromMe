@@ -1,0 +1,56 @@
+﻿0keepthatawayfromme-name|Keep That Away From Me
+keepthatawayfromme-description|Bans selected types of things from the game without damaging the save file.
+Creatures|Creatures
+Creature List|Creature List
+BAN|BAN
+Presets|Presets
+Toggle many types at once with Presets|Toggle many types at once with Presets
+Objects|Objects
+Object List|Object List
+Banned <Preset>|Banned <Preset>
+Reenabled <Preset>|Reenabled <Preset>
+All Creatures|All Creatures
+Toggle All Creatures|Toggle All Creatures
+all Creatures|all Creatures
+Arachnophobia|Arachnophobia
+Toggle All Spiders (Big and Small)|Toggle All Spiders (Big and Small)
+all Spiders|all Spiders
+Scolopendrphobia|Scolopendrphobia
+Toggle All Centipedes|Toggle All Centipedes
+all Centipedes and Centiwings|all Centipedes and Centiwings
+Entomophobia|Entomophobia
+Toggle All Bugs (Excluding Spiders and Centipedes)|Toggle All Bugs (Excluding Spiders and Centipedes)
+all Bugs (except Spiders and Centipedes) and Noodleflies|all Bugs (except Spiders and Centipedes) and Noodleflies
+Herpetophobia|Herpetophobia
+Toggle All Lizards|Toggle All Lizards
+all Lizards and Salamanders|all Lizards and Salamanders
+Ornithophobia|Ornithophobia
+Toggle All Birds|Toggle All Birds
+all Vultures and Miros|all Vultures and Miros
+Bdellophobia|Bdellophobia
+Toggle All Leeches|Toggle All Leeches (pretty sure bdellophobia is not a word...)
+all Leeches|all Leeches
+Pithecophobia|Pithecophobia
+Toggle All Scavengers|Toggle All Scavengers
+all Scavengers|all Scavengers
+Seplophobia|Seplophobia
+Toggle All Daddies|Toggle All Daddies
+all Daddies|all Daddies
+All Items|All Items
+Toggle All Items|Toggle All Items
+all Items|all Items
+Weapons|Weapons
+Toggle All Damaging Weapons|Toggle All Damaging Weapons
+Rock, Spear and Bomb|Rock, Spear and Bomb
+Pearls|Pearls
+Toggle All Pearls|Toggle All Pearls
+Data Pearls and Pebbles' Pearls|Data Pearls and Pebbles' Pearls
+Plants|Plants
+Toggle All Unedible Plants|Toggle All Unedible Plants
+all Unedible Plants|all Unedible Plants
+Crops|Crops
+Toggle All Edible Crops|Toggle All Edible Crops
+all Edible Crops|all Edible Crops
+ban-artificer-softlock-warning|Warning!<LINE><LINE>Banning Scavenger will softlock Artificer Campaign.
+ban-spearmaster-softlock-warning|Warning!<LINE><LINE>Banning Spear will softlock Spearmaster runs.
+ban-gourmand-endinglock-warning|Warning!<LINE><LINE>You cannot complete Gourmand's Food Quest with this configuration.

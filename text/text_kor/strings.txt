@@ -1,0 +1,56 @@
+﻿0keepthatawayfromme-name|그거 좀 치아라
+keepthatawayfromme-description|세이브 파일을 손상시키지 않고 게임에서 특정 종류의 것을 금지합니다.
+Creatures|생물
+Creature List|생물 목록
+BAN|금지
+Presets|프리셋
+Toggle many types at once with Presets|프리셋으로 여러 종류를 동시에 금지 설정 및 해제
+Objects|물건
+Object List|물건 목록
+Banned <Preset>|<Preset> 금지됨
+Reenabled <Preset>|<Preset> 금지 해제됨
+All Creatures|모든 생물
+Toggle All Creatures|모든 생물 켜고 끄기
+all Creatures|모든 생물이
+Arachnophobia|거미류
+Toggle All Spiders (Big and Small)|크고 작은 거미 켜고 끄기
+all Spiders|모든 거미가
+Scolopendrphobia|지네류
+Toggle All Centipedes|모든 지네류 켜고 끄기
+all Centipedes and Centiwings|모든 지네 및 날개지네가
+Entomophobia|기타 곤충류
+Toggle All Bugs (Excluding Spiders and Centipedes)|거미와 지네를 제외한 나머지 곤충류 켜고 끄기
+all Bugs (except Spiders and Centipedes) and Noodleflies|거미와 지네를 제외한 나머지 곤충과 국수파리가
+Herpetophobia|도마뱀류
+Toggle All Lizards|모든 도마뱀류 켜고 끄기
+all Lizards and Salamanders|kor$모든 도마뱀과 도롱뇽이
+Ornithophobia|조류
+Toggle All Birds|모든 새 켜고 끄기
+all Vultures and Miros|모든 독수리와 가위새가
+Bdellophobia|거머리류
+Toggle All Leeches|모든 거머리류 켜고 끄기
+all Leeches|모든 거머리가
+Pithecophobia|스캐빈저류
+Toggle All Scavengers|모든 스캐빈저류 켜고 끄기
+all Scavengers|모든 스캐빈저가
+Seplophobia|대디류
+Toggle All Daddies|모든 대디류 켜고 끄기
+all Daddies|모든 대디가
+All Items|모든 물건
+Toggle All Items|모든 물건 켜고 끄기
+all Items|모든 물건이
+Weapons|무기류
+Toggle All Damaging Weapons|피해를 가하는 모든 무기 켜고 끄기
+Rock, Spear and Bomb|돌, 창과 폭탄이
+Pearls|진주
+Toggle All Pearls|모든 진주 켜고 끄기
+Data Pearls and Pebbles' Pearls|모든 진주가
+Plants|식물류
+Toggle All Unedible Plants|못 먹는 식물류 켜고 끄기
+all Unedible Plants|못 먹는 식물류가
+Crops|작물류
+Toggle All Edible Crops|먹을 수 있는 작물류 켜고 끄기
+all Edible Crops|먹을 수 있는 작물류가
+ban-artificer-softlock-warning|경고!<LINE><LINE>스캐빈저를 금지하면 기술병 캠페인이 막히게 됩니다.
+ban-spearmaster-softlock-warning|경고!<LINE><LINE>창을 금지하면 창술가를 진행할 수 없게 됩니다.
+ban-gourmand-endinglock-warning|경고!<LINE><LINE>이 설정으로는 대식가의 식도락을 완료할 수 없습니다.
