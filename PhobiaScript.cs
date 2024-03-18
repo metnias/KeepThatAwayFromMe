@@ -58,8 +58,21 @@ namespace KeepThatAwayFromMe
             void Hide()
             { foreach (FSprite fs in self.sprites) { fs.isVisible = false; } }
 
+            if (self.drawableObject is GraphicsModule gm)
+            {
+                if (gm.owner is Creature cr && PhobiaPlugin.IsCritBanned(cr.Template))
+                {
+                    //foreach (FSprite fs in self.sprites) { if (fs.isVisible) { Debug.Log(cr.Template.name); break; } }
+                    Hide(); return;
+                }
+                if (PhobiaPlugin.IsObjBanned(gm.owner.abstractPhysicalObject))
+                {
+                    //foreach (FSprite fs in self.sprites) { if (fs.isVisible) { Debug.Log(gm.owner.abstractPhysicalObject.type); break; } }
+                    Hide(); return;
+                }
+            }
             if (self.drawableObject is Creature c && PhobiaPlugin.IsCritBanned(c.Template)) { Hide(); return; }
-            else if (self.drawableObject is PhysicalObject po && PhobiaPlugin.IsObjBanned(po.abstractPhysicalObject)) { Hide(); return; }
+            if (self.drawableObject is PhysicalObject po && PhobiaPlugin.IsObjBanned(po.abstractPhysicalObject)) { Hide(); return; }
             orig(self, timeStacker, rCam, camPos);
         }
 
