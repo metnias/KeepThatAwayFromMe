@@ -1,7 +1,7 @@
 {
   "id": "keepthatawayfromme",
   "name": "KeepThatAwayFromMe",
-  "version": "1.0.2.0",
+  "version": "1.0.2.1",
   "hide_version": false,
   "authors": "topicular",
   "description": "Bans selected types of things from the game without damaging the save file.",

@@ -1,11 +1,7 @@
 ﻿using BepInEx;
-using BepInEx.Logging;
 using KeepThatAwayFromMe;
-using Menu.Remix;
 using MoreSlugcats;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 #region Assembly attributes
@@ -25,7 +21,7 @@ namespace KeepThatAwayFromMe
     {
         public const string PLUGIN_ID = "com.rainworldgame.keepthatawayfromme.plugin";
         public const string PLUGIN_NAME = "KeepThatAwayFromMe";
-        public const string PLUGIN_VERSION = "1.0.2.0";
+        public const string PLUGIN_VERSION = "1.0.2.1";
 
         public void Awake()
         {

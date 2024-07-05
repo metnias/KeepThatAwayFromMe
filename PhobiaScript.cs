@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace KeepThatAwayFromMe
 {
@@ -85,7 +84,46 @@ namespace KeepThatAwayFromMe
                     self.CollideWithObjects = false;
                     if (self is PlayerCarryableItem item) { item.Forbid(); }
                 }
-                else { self.Destroy(); }
+                else
+                {
+                    // Copied from https://github.com/woutkolkman/mousedrag/blob/2330657c266c9fdda5624da700e86039345ce1bf/MouseDrag/Tools/Destroy.cs#L12
+                    ReleaseAllGrasps(self);
+
+                    if (self is SporePlant && (self as SporePlant).stalk != null)
+                    {
+                        (self as SporePlant).stalk.sporePlant = null;
+                        (self as SporePlant).stalk = null;
+                    }
+
+                    if (self is Spear) //prevent spear leaving invisible beams behind
+                        (self as Spear).resetHorizontalBeamState();
+
+                    self?.RemoveFromRoom();
+                    self?.abstractPhysicalObject?.Room?.RemoveEntity(self.abstractPhysicalObject); //prevent realizing after hibernation
+                    self?.Destroy();
+
+                    void ReleaseAllGrasps(PhysicalObject obj)
+                    {
+                        if (obj?.grabbedBy != null)
+                            for (int i = obj.grabbedBy.Count - 1; i >= 0; i--)
+                                obj.grabbedBy[i]?.Release();
+
+                        if (obj is Creature)
+                        {
+                            if (obj is Player)
+                            {
+                                //drop slugcats
+                                (obj as Player).slugOnBack?.DropSlug();
+                                (obj as Player).onBack?.slugOnBack?.DropSlug();
+                                (obj as Player).slugOnBack = null;
+                                (obj as Player).onBack = null;
+                                (obj as Player).spearOnBack?.DropSpear();
+                            }
+
+                            (obj as Creature).LoseAllGrasps();
+                        }
+                    }
+                }
             }
             orig(self, eu);
         }
