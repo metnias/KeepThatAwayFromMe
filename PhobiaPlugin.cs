@@ -3,6 +3,7 @@ using KeepThatAwayFromMe;
 using MoreSlugcats;
 using System.Collections.Generic;
 using System.Reflection;
+using Watcher;
 
 #region Assembly attributes
 
@@ -21,7 +22,7 @@ namespace KeepThatAwayFromMe
     {
         public const string PLUGIN_ID = "com.rainworldgame.keepthatawayfromme.plugin";
         public const string PLUGIN_NAME = "KeepThatAwayFromMe";
-        public const string PLUGIN_VERSION = "1.0.2.1";
+        public const string PLUGIN_VERSION = "1.1.0.0";
 
         public void Awake()
         {
@@ -119,11 +120,27 @@ namespace KeepThatAwayFromMe
             if (type == AbstractPhysicalObject.AbstractObjectType.AttachedBee) return false;
             if (type == AbstractPhysicalObject.AbstractObjectType.DartMaggot) return false;
             if (type == AbstractPhysicalObject.AbstractObjectType.NSHSwarmer) return false;
-            if (!ModManager.MSC) return true;
-            if (type == MoreSlugcatsEnums.AbstractObjectType.HalcyonPearl) return false;
-            if (type == MoreSlugcatsEnums.AbstractObjectType.Spearmasterpearl) return false;
-            if (type == MoreSlugcatsEnums.AbstractObjectType.EnergyCell) return false;
-            if (type == MoreSlugcatsEnums.AbstractObjectType.Bullet) return false;
+            if (type == AbstractPhysicalObject.AbstractObjectType.CollisionField) return false;
+            if (type == AbstractPhysicalObject.AbstractObjectType.BlinkingFlower) return false;
+            if (type == AbstractPhysicalObject.AbstractObjectType.LobeTree) return false;
+            //if (type == AbstractPhysicalObject.AbstractObjectType.VoidSpawn) return false;
+            if (ModManager.MSC)
+            {
+                if (type == MoreSlugcatsEnums.AbstractObjectType.HalcyonPearl) return false;
+                if (type == MoreSlugcatsEnums.AbstractObjectType.Spearmasterpearl) return false;
+                if (type == MoreSlugcatsEnums.AbstractObjectType.EnergyCell) return false;
+                if (type == MoreSlugcatsEnums.AbstractObjectType.Bullet) return false;
+            }
+            if (ModManager.Watcher)
+            {
+                if (type == WatcherEnums.AbstractObjectType.BallToy) return false;
+                if (type == WatcherEnums.AbstractObjectType.SoftToy) return false;
+                if (type == WatcherEnums.AbstractObjectType.SpinToy) return false;
+                if (type == WatcherEnums.AbstractObjectType.WeirdToy) return false;
+                if (type == WatcherEnums.AbstractObjectType.Prince) return false;
+                if (type == WatcherEnums.AbstractObjectType.PrinceBulb) return false;
+                if (type == WatcherEnums.AbstractObjectType.RippleSpawn) return false;
+            }
             return true;
         }
 

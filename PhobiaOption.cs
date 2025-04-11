@@ -238,7 +238,7 @@ namespace KeepThatAwayFromMe
                     break;
 
                 case 3: // Etc Insects
-                    trig = new string[] { "bug", "needleworm" };
+                    trig = new string[] { "bug", "needleworm", "grub", "moth" };
                     break;
 
                 case 4: // Lizards
@@ -258,7 +258,7 @@ namespace KeepThatAwayFromMe
                     break;
 
                 case 8: // Daddies
-                    trig = new string[] { "daddy", "longlegs" };
+                    trig = new string[] { "daddy", "longlegs", "rot", "rattler" };
                     break;
             }
             List<CreatureTemplate.Type> toggles = new List<CreatureTemplate.Type>();
@@ -305,7 +305,8 @@ namespace KeepThatAwayFromMe
                     break;
 
                 case 4: // Crops
-                    trig = new string[] { "fruit", "nut", "seedcob", "mushroom", "slimemold" };
+                    trig = new string[] { "fruit", "nut", "seedcob", "mushroom", "slimemold",
+                        "gooieduck", "lillypuck", "glowweed", "peach", "seed", "pomegranate" };
                     break;
             }
             List<AbstractPhysicalObject.AbstractObjectType> toggles = new List<AbstractPhysicalObject.AbstractObjectType>();

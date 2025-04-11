@@ -1,11 +1,11 @@
 {
   "id": "keepthatawayfromme",
   "name": "KeepThatAwayFromMe",
-  "version": "1.0.2.1",
+  "version": "1.1.0.0",
   "hide_version": false,
   "authors": "topicular",
   "description": "Bans selected types of things from the game without damaging the save file.",
-  "target_game_version": "v1.9",
+  "target_game_version": "v1.10",
   "requirements": [],
   "requirements_names": [],
   "tags": [ "Accessibility", "Tools" ],

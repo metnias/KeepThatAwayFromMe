@@ -34,8 +34,8 @@ Pithecophobia|Pithecophobia
 Toggle All Scavengers|Toggle All Scavengers
 all Scavengers|all Scavengers
 Seplophobia|Seplophobia
-Toggle All Daddies|Toggle All Daddies
-all Daddies|all Daddies
+Toggle All Daddies|Toggle All Rots (Excluding Lizards)
+all Daddies|all Rots
 All Items|All Items
 Toggle All Items|Toggle All Items
 all Items|all Items

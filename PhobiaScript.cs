@@ -12,10 +12,13 @@ namespace KeepThatAwayFromMe
             // killing them (to keep the save unaffected)
             On.AbstractCreature.ctor += StayInDen;
             On.AbstractCreature.InDenUpdate += StayInDenUpdate;
+            On.AbstractCreature.Realize += CreatureNoRealize;
             On.Creature.Update += CreatureFreeze;
+            On.AbstractPhysicalObject.Realize += ObjectNoRealize;
             //On.GraphicsModule.DrawSprites += CreatureHide;
             On.RoomCamera.SpriteLeaser.Update += ObjectHide;
             On.PhysicalObject.Update += ObjectFreeze;
+            On.PlayerCarryableItem.Update += PCObjectFreeze;
             On.Spear.ChangeMode += StuckSpearFix;
         }
 
@@ -79,10 +82,11 @@ namespace KeepThatAwayFromMe
         {
             if (PhobiaPlugin.IsObjBanned(self.abstractPhysicalObject))
             {
+                if (self.room == null || !self.room.readyForAI) goto SKIP;
                 if (self.room.abstractRoom.shelter)
                 {
                     self.CollideWithObjects = false;
-                    if (self is PlayerCarryableItem item) { item.Forbid(); }
+                    //if (self is PlayerCarryableItem item) { item.Forbid(); }
                 }
                 else
                 {
@@ -101,6 +105,8 @@ namespace KeepThatAwayFromMe
                     self?.RemoveFromRoom();
                     self?.abstractPhysicalObject?.Room?.RemoveEntity(self.abstractPhysicalObject); //prevent realizing after hibernation
                     self?.Destroy();
+
+                    return;
 
                     void ReleaseAllGrasps(PhysicalObject obj)
                     {
@@ -125,6 +131,98 @@ namespace KeepThatAwayFromMe
                     }
                 }
             }
+        SKIP:
+            orig(self, eu);
+        }
+
+        private static void ObjectNoRealize(On.AbstractPhysicalObject.orig_Realize orig, AbstractPhysicalObject self)
+        {
+            if (PhobiaPlugin.IsObjBanned(self))
+            {
+                /*
+                if (!self.Room.shelter)
+                {
+                    self?.Room?.RemoveEntity(self);
+                    self?.Destroy();
+                }
+                */
+
+                return;
+            }
+            orig(self);
+        }
+
+        private static void CreatureNoRealize(On.AbstractCreature.orig_Realize orig, AbstractCreature self)
+        {
+            if (PhobiaPlugin.IsCritBanned(self.creatureTemplate))
+            {
+                /*
+                if (!self.Room.shelter)
+                {
+                    self?.Room?.RemoveEntity(self);
+                    self?.Destroy();
+                }
+                */
+
+                return;
+            }
+            orig(self);
+        }
+
+        private static void PCObjectFreeze(On.PlayerCarryableItem.orig_Update orig, PlayerCarryableItem self, bool eu)
+        {
+            if (PhobiaPlugin.IsObjBanned(self.abstractPhysicalObject))
+            {
+                if (self.room == null || !self.room.readyForAI) goto SKIP;
+                if (self.room.abstractRoom.shelter)
+                {
+                    self.CollideWithObjects = false;
+                    self.Forbid();
+                }
+                else
+                {
+                    // Copied from https://github.com/woutkolkman/mousedrag/blob/2330657c266c9fdda5624da700e86039345ce1bf/MouseDrag/Tools/Destroy.cs#L12
+                    ReleaseAllGrasps(self);
+
+                    if (self is SporePlant && (self as SporePlant).stalk != null)
+                    {
+                        (self as SporePlant).stalk.sporePlant = null;
+                        (self as SporePlant).stalk = null;
+                    }
+
+                    if (self is Spear) //prevent spear leaving invisible beams behind
+                        (self as Spear).resetHorizontalBeamState();
+
+                    self?.RemoveFromRoom();
+                    self?.abstractPhysicalObject?.Room?.RemoveEntity(self.abstractPhysicalObject); //prevent realizing after hibernation
+                    self?.Destroy();
+
+                    return;
+
+                    void ReleaseAllGrasps(PhysicalObject obj)
+                    {
+                        if (obj?.grabbedBy != null)
+                            for (int i = obj.grabbedBy.Count - 1; i >= 0; i--)
+                                obj.grabbedBy[i]?.Release();
+
+                        if (obj is Creature)
+                        {
+                            if (obj is Player)
+                            {
+                                //drop slugcats
+                                (obj as Player).slugOnBack?.DropSlug();
+                                (obj as Player).onBack?.slugOnBack?.DropSlug();
+                                (obj as Player).slugOnBack = null;
+                                (obj as Player).onBack = null;
+                                (obj as Player).spearOnBack?.DropSpear();
+                            }
+
+                            (obj as Creature).LoseAllGrasps();
+                        }
+                    }
+                }
+            }
+        SKIP:
             orig(self, eu);
         }
 

@@ -33,9 +33,9 @@ all Leeches|모든 거머리가
 Pithecophobia|스캐빈저류
 Toggle All Scavengers|모든 스캐빈저류 켜고 끄기
 all Scavengers|모든 스캐빈저가
-Seplophobia|대디류
-Toggle All Daddies|모든 대디류 켜고 끄기
-all Daddies|모든 대디가
+Seplophobia|부패류
+Toggle All Daddies|모든 부패류 켜고 끄기 (도마뱀 제외)
+all Daddies|모든 부패가
 All Items|모든 물건
 Toggle All Items|모든 물건 켜고 끄기
 all Items|모든 물건이
