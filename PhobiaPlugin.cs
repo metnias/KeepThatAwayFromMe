@@ -22,7 +22,7 @@ namespace KeepThatAwayFromMe
     {
         public const string PLUGIN_ID = "com.rainworldgame.keepthatawayfromme.plugin";
         public const string PLUGIN_NAME = "KeepThatAwayFromMe";
-        public const string PLUGIN_VERSION = "1.1.0.0";
+        public const string PLUGIN_VERSION = "1.1.0.1";
 
         public void Awake()
         {

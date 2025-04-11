@@ -20,6 +20,8 @@ namespace KeepThatAwayFromMe
             On.PhysicalObject.Update += ObjectFreeze;
             On.PlayerCarryableItem.Update += PCObjectFreeze;
             On.Spear.ChangeMode += StuckSpearFix;
+
+            On.FliesRoomAI.Update += FliesRoomAIPatch;
         }
 
         private static void StayInDen(On.AbstractCreature.orig_ctor orig, AbstractCreature self,
@@ -156,17 +158,27 @@ namespace KeepThatAwayFromMe
         {
             if (PhobiaPlugin.IsCritBanned(self.creatureTemplate))
             {
-                /*
                 if (!self.Room.shelter)
                 {
                     self?.Room?.RemoveEntity(self);
                     self?.Destroy();
                 }
-                */
 
                 return;
             }
             orig(self);
+        }
+
+        private static void FliesRoomAIPatch(On.FliesRoomAI.orig_Update orig, FliesRoomAI self, bool eu)
+        {
+            if (PhobiaPlugin.bannedCritTypes.Contains(CreatureTemplate.Type.Fly))
+            {
+                foreach (var f in self.flies) f?.Destroy();
+                self.flies.Clear();
+                foreach (var f in self.inHive) f?.Destroy();
+                self.inHive.Clear();
+            }
+            orig(self, eu);
         }
 
         private static void PCObjectFreeze(On.PlayerCarryableItem.orig_Update orig, PlayerCarryableItem self, bool eu)
