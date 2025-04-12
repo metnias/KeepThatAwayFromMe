@@ -22,55 +22,68 @@ namespace KeepThatAwayFromMe
     {
         public const string PLUGIN_ID = "com.rainworldgame.keepthatawayfromme.plugin";
         public const string PLUGIN_NAME = "KeepThatAwayFromMe";
-        public const string PLUGIN_VERSION = "1.1.0.1";
+        public const string PLUGIN_VERSION = "1.1.0.3";
 
         public void Awake()
         {
             instance = this;
             On.RainWorld.OnModsInit += Init;
+            //On.RainWorld.PostModsDisabledEnabled += AtOnModsSwitched;
         }
+
+        private static PhobiaOption poi;
 
         private static void Init(On.RainWorld.orig_OnModsInit orig, RainWorld rw) // On.RainWorld.orig_OnModsInit orig, RainWorld rw
         {
             orig(rw);
             if (init) return;
             init = true;
-            PhobiaOption poi = new PhobiaOption();
+            poi = new PhobiaOption();
             InitializeConfig(poi);
             MachineConnector.SetRegisteredOI("keepthatawayfromme", poi);
             PhobiaScript.Patch();
             instance.Logger.LogMessage("KeepThatAwayFromMe is Intilaized.");
             //foreach (KeyValuePair<string, ConfigurableBase> p in poi.config.configurables)
             //    instance.Logger.LogInfo($"{p.Value.key}: {ValueConverter.ConvertToString(p.Value.BoxedValue, p.Value.settingType)} {p.Value.defaultValue}");
+        }
 
-            void InitializeConfig(PhobiaOption oi)
+        /*
+        private static void AtOnModsSwitched(On.RainWorld.orig_PostModsDisabledEnabled orig, RainWorld rw)
+        {
+            orig(rw);
+            InitializeConfig(poi);
+        }
+        */
+
+        private static void InitializeConfig(PhobiaOption oi)
+        {
+            // Initialize Creature Types
+            string[] allNames = ExtEnumBase.GetNames(typeof(CreatureTemplate.Type));
+            List<string> okayNames = new List<string>();
+            for (int i = 0; i < allNames.Length; i++)
+            { if (IsValidCritType(allNames[i])) { okayNames.Add(allNames[i]); } }
+            allCritTypes = new CreatureTemplate.Type[okayNames.Count];
+            critTypesBan = new Configurable<bool>[okayNames.Count];
+            for (int j = 0; j < okayNames.Count; j++)
             {
-                // Initialize Creature Types
-                string[] allNames = ExtEnumBase.GetNames(typeof(CreatureTemplate.Type));
-                List<string> okayNames = new List<string>();
-                for (int i = 0; i < allNames.Length; i++)
-                { if (IsValidCritType(allNames[i])) { okayNames.Add(allNames[i]); } }
-                allCritTypes = new CreatureTemplate.Type[okayNames.Count];
-                critTypesBan = new Configurable<bool>[okayNames.Count];
-                for (int j = 0; j < okayNames.Count; j++)
-                {
-                    allCritTypes[j] = new CreatureTemplate.Type(okayNames[j], false);
-                    critTypesBan[j] = oi.config.Bind(PhobiaOption.GenerateCritKey(allCritTypes[j]), false);
-                }
-
-                // Initialize Object Types
-                allNames = ExtEnumBase.GetNames(typeof(AbstractPhysicalObject.AbstractObjectType));
-                okayNames.Clear();
-                for (int i = 0; i < allNames.Length; i++)
-                { if (IsValidObjType(allNames[i])) { okayNames.Add(allNames[i]); } }
-                allObjTypes = new AbstractPhysicalObject.AbstractObjectType[okayNames.Count];
-                objTypesBan = new Configurable<bool>[okayNames.Count];
-                for (int j = 0; j < okayNames.Count; j++)
-                {
-                    allObjTypes[j] = new AbstractPhysicalObject.AbstractObjectType(okayNames[j], false);
-                    objTypesBan[j] = oi.config.Bind(PhobiaOption.GenerateObjKey(allObjTypes[j]), false);
-                }
+                allCritTypes[j] = new CreatureTemplate.Type(okayNames[j], false);
+                critTypesBan[j] = oi.config.Bind(PhobiaOption.GenerateCritKey(allCritTypes[j]), false);
             }
+            instance.Logger.LogInfo($"Crit Types: {string.Join(", ", okayNames)}");
+
+            // Initialize Object Types
+            allNames = ExtEnumBase.GetNames(typeof(AbstractPhysicalObject.AbstractObjectType));
+            okayNames.Clear();
+            for (int i = 0; i < allNames.Length; i++)
+            { if (IsValidObjType(allNames[i])) { okayNames.Add(allNames[i]); } }
+            allObjTypes = new AbstractPhysicalObject.AbstractObjectType[okayNames.Count];
+            objTypesBan = new Configurable<bool>[okayNames.Count];
+            for (int j = 0; j < okayNames.Count; j++)
+            {
+                allObjTypes[j] = new AbstractPhysicalObject.AbstractObjectType(okayNames[j], false);
+                objTypesBan[j] = oi.config.Bind(PhobiaOption.GenerateObjKey(allObjTypes[j]), false);
+            }
+            instance.Logger.LogInfo($"Item Types: {string.Join(", ", okayNames)}");
         }
 
         private static bool init = false;
@@ -123,6 +136,7 @@ namespace KeepThatAwayFromMe
             if (type == AbstractPhysicalObject.AbstractObjectType.CollisionField) return false;
             if (type == AbstractPhysicalObject.AbstractObjectType.BlinkingFlower) return false;
             if (type == AbstractPhysicalObject.AbstractObjectType.LobeTree) return false;
+            if (type == AbstractPhysicalObject.AbstractObjectType.Pomegranate) return ModManager.Watcher;
             //if (type == AbstractPhysicalObject.AbstractObjectType.VoidSpawn) return false;
             if (ModManager.MSC)
             {

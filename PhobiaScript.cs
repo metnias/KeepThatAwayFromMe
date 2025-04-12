@@ -22,6 +22,7 @@ namespace KeepThatAwayFromMe
             On.Spear.ChangeMode += StuckSpearFix;
 
             On.FliesRoomAI.Update += FliesRoomAIPatch;
+            On.Room.PlaceQuantifiedCreaturesInRoom += PlaceQuantifiedCreaturesInRoomPatch;
         }
 
         private static void StayInDen(On.AbstractCreature.orig_ctor orig, AbstractCreature self,
@@ -179,6 +180,12 @@ namespace KeepThatAwayFromMe
                 self.inHive.Clear();
             }
             orig(self, eu);
+        }
+
+        private static void PlaceQuantifiedCreaturesInRoomPatch(On.Room.orig_PlaceQuantifiedCreaturesInRoom orig, Room self, CreatureTemplate.Type critType)
+        {
+            if (PhobiaPlugin.bannedCritTypes.Contains(critType)) return;
+            orig(self, critType);
         }
 
         private static void PCObjectFreeze(On.PlayerCarryableItem.orig_Update orig, PlayerCarryableItem self, bool eu)
