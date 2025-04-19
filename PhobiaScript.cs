@@ -12,6 +12,7 @@ namespace KeepThatAwayFromMe
             // killing them (to keep the save unaffected)
             On.AbstractCreature.ctor += StayInDen;
             On.AbstractCreature.InDenUpdate += StayInDenUpdate;
+            On.AbstractCreature.AllowedToExistInRoom += DisallowCreatureExistInRoon;
             On.AbstractCreature.Realize += CreatureNoRealize;
             On.Creature.Update += CreatureFreeze;
             On.AbstractPhysicalObject.Realize += ObjectNoRealize;
@@ -136,6 +137,17 @@ namespace KeepThatAwayFromMe
             }
         SKIP:
             orig(self, eu);
+        }
+
+        private static bool DisallowCreatureExistInRoon(On.AbstractCreature.orig_AllowedToExistInRoom orig, AbstractCreature self, Room room)
+        {
+            bool res = orig(self, room);
+            if (res)
+            {
+                if (PhobiaPlugin.IsCritBanned(self.creatureTemplate))
+                    return false;
+            }
+            return res;
         }
 
         private static void ObjectNoRealize(On.AbstractPhysicalObject.orig_Realize orig, AbstractPhysicalObject self)
