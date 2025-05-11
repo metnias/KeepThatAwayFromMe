@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Menu.Remix;
+﻿using Menu.Remix;
 using Menu.Remix.MixedUI;
 using Menu.Remix.MixedUI.ValueTypes;
+using System.Collections.Generic;
 using UnityEngine;
 using static IconSymbol;
 
@@ -75,7 +73,7 @@ namespace KeepThatAwayFromMe
                 sbCrits.AddItems(ckCrits[c]);
                 IconSymbolData iconData = new IconSymbolData(PhobiaPlugin.allCritTypes[c], AbstractPhysicalObject.AbstractObjectType.Creature, 0);
                 string iconName = CreatureSymbol.SpriteNameOfCreature(iconData);
-                if (iconName != "Futile_White")
+                if (iconName != "Futile_White" && Futile.atlasManager.DoesContainElementWithName(iconName))
                 {
                     sbCrits.AddItems(new OpImage(new Vector2(80f, GetCritOffset(c) + ITEM_HEIGHT / 2f), iconName)
                     { color = CreatureSymbol.ColorOfCreature(iconData), anchor = ICON_ANCHOR });
@@ -136,7 +134,7 @@ namespace KeepThatAwayFromMe
                 ckObjs[c] = new OpCheckBox(PhobiaPlugin.objTypesBan[c], new Vector2(90f, GetObjOffset(c) + 3f));
                 sbObjs.AddItems(ckObjs[c]);
                 string iconName = ItemSymbol.SpriteNameForItem(PhobiaPlugin.allObjTypes[c], 0);
-                if (iconName != "Futile_White")
+                if (iconName != "Futile_White" && Futile.atlasManager.DoesContainElementWithName(iconName))
                 {
                     sbObjs.AddItems(new OpImage(new Vector2(80f, GetObjOffset(c) + ITEM_HEIGHT / 2f), iconName)
                     { color = ItemSymbol.ColorForItem(PhobiaPlugin.allObjTypes[c], 0), anchor = ICON_ANCHOR });
