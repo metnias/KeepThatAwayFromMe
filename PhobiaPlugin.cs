@@ -161,7 +161,7 @@ namespace KeepThatAwayFromMe
                 if (type == WatcherEnums.AbstractObjectType.WeirdToy) return false;
                 if (type == WatcherEnums.AbstractObjectType.Prince) return false;
                 if (type == WatcherEnums.AbstractObjectType.PrinceBulb) return false;
-                if (type == WatcherEnums.AbstractObjectType.RippleSpawn) return false;
+                //if (type == WatcherEnums.AbstractObjectType.RippleSpawn) return false;
                 if (type == WatcherEnums.AbstractObjectType.KnotSpawn) return false;
             }
             return true;
