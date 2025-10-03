@@ -22,18 +22,18 @@ namespace KeepThatAwayFromMe
     {
         public const string PLUGIN_ID = "com.rainworldgame.keepthatawayfromme.plugin";
         public const string PLUGIN_NAME = "KeepThatAwayFromMe";
-        public const string PLUGIN_VERSION = "1.1.0.5";
+        public const string PLUGIN_VERSION = "1.1.0.6";
 
         public void Awake()
         {
             instance = this;
-            On.RainWorld.OnModsInit += Init;
+            On.RainWorld.PostModsInit += PostInit;
             //On.RainWorld.PostModsDisabledEnabled += AtOnModsSwitched;
         }
 
         private static PhobiaOption poi;
 
-        private static void Init(On.RainWorld.orig_OnModsInit orig, RainWorld rw) // On.RainWorld.orig_OnModsInit orig, RainWorld rw
+        private static void PostInit(On.RainWorld.orig_PostModsInit orig, RainWorld rw) // On.RainWorld.orig_OnModsInit orig, RainWorld rw
         {
             orig(rw);
             if (init) return;
@@ -59,6 +59,7 @@ namespace KeepThatAwayFromMe
         {
             // Initialize Creature Types
             string[] allNames = ExtEnumBase.GetNames(typeof(CreatureTemplate.Type));
+
             List<string> okayNames = new List<string>();
             for (int i = 0; i < allNames.Length; i++)
             { if (IsValidCritType(allNames[i])) { okayNames.Add(allNames[i]); } }
@@ -107,8 +108,15 @@ namespace KeepThatAwayFromMe
             // if (type == CreatureTemplate.Type.Overseer) return false;
             // if (type == CreatureTemplate.Type.TempleGuard) return false;
             if (type.value.ToLower().Contains("template")) return false;
-            if (!ModManager.MSC) return true;
-            if (type == MoreSlugcatsEnums.CreatureTemplateType.SlugNPC) return false;
+            if (ModManager.MSC)
+            {
+                if (type == MoreSlugcatsEnums.CreatureTemplateType.SlugNPC) return false;
+            }
+            if (ModManager.Watcher)
+            {
+                if (type == WatcherEnums.CreatureTemplateType.Millipede) return false;
+                if (type == WatcherEnums.CreatureTemplateType.GrappleSnake) return false;
+            }
             return true;
         }
 
@@ -154,6 +162,7 @@ namespace KeepThatAwayFromMe
                 if (type == WatcherEnums.AbstractObjectType.Prince) return false;
                 if (type == WatcherEnums.AbstractObjectType.PrinceBulb) return false;
                 if (type == WatcherEnums.AbstractObjectType.RippleSpawn) return false;
+                if (type == WatcherEnums.AbstractObjectType.KnotSpawn) return false;
             }
             return true;
         }
