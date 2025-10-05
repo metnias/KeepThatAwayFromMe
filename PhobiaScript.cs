@@ -42,7 +42,7 @@ namespace KeepThatAwayFromMe
         private static void CreatureFreeze(On.Creature.orig_Update orig, Creature self, bool eu)
         {
             if (PhobiaPlugin.IsCritBanned(self.abstractCreature.creatureTemplate))
-            { foreach (BodyChunk bc in self.bodyChunks) { bc.HardSetPosition(new Vector2(0f, -1000f)); } return; }
+            { foreach (BodyChunk bc in self.bodyChunks) { bc.HardSetPosition(new Vector2(100000f, 100000f)); } return; }
             orig(self, eu);
         }
 

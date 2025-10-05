@@ -22,27 +22,41 @@ namespace KeepThatAwayFromMe
     {
         public const string PLUGIN_ID = "com.rainworldgame.keepthatawayfromme.plugin";
         public const string PLUGIN_NAME = "KeepThatAwayFromMe";
-        public const string PLUGIN_VERSION = "1.1.0.6";
+        public const string PLUGIN_VERSION = "1.1.0.7";
 
         public void Awake()
         {
             instance = this;
+            On.RainWorld.OnModsInit += Init;
             On.RainWorld.PostModsInit += PostInit;
             //On.RainWorld.PostModsDisabledEnabled += AtOnModsSwitched;
         }
 
         private static PhobiaOption poi;
+        private static bool init = false;
+        private static bool postInit = false;
 
-        private static void PostInit(On.RainWorld.orig_PostModsInit orig, RainWorld rw) // On.RainWorld.orig_OnModsInit orig, RainWorld rw
+        private static void Init(On.RainWorld.orig_OnModsInit orig, RainWorld rw) // On.RainWorld.orig_OnModsInit orig, RainWorld rw
         {
             orig(rw);
             if (init) return;
             init = true;
-            poi = new PhobiaOption();
-            InitializeConfig(poi);
-            MachineConnector.SetRegisteredOI("keepthatawayfromme", poi);
             PhobiaScript.Patch();
+            poi = new PhobiaOption();
+            //InitializeConfig(poi);
+            MachineConnector.SetRegisteredOI("keepthatawayfromme", poi);
+            //foreach (KeyValuePair<string, ConfigurableBase> p in poi.config.configurables)
+            //    instance.Logger.LogInfo($"{p.Value.key}: {ValueConverter.ConvertToString(p.Value.BoxedValue, p.Value.settingType)} {p.Value.defaultValue}");
+        }
+
+        private static void PostInit(On.RainWorld.orig_PostModsInit orig, RainWorld rw) // On.RainWorld.orig_OnModsInit orig, RainWorld rw
+        {
+            orig(rw);
+            if (postInit) return;
+            postInit = true;
+            InitializeConfig(poi);
             instance.Logger.LogMessage("KeepThatAwayFromMe is Intilaized.");
+            instance.Logger.LogMessage($"Banned Crits: {bannedCritTypes.Count}, Banned Items: {bannedObjTypes.Count}");
             //foreach (KeyValuePair<string, ConfigurableBase> p in poi.config.configurables)
             //    instance.Logger.LogInfo($"{p.Value.key}: {ValueConverter.ConvertToString(p.Value.BoxedValue, p.Value.settingType)} {p.Value.defaultValue}");
         }
@@ -85,9 +99,9 @@ namespace KeepThatAwayFromMe
                 objTypesBan[j] = oi.config.Bind(PhobiaOption.GenerateObjKey(allObjTypes[j]), false);
             }
             instance.Logger.LogInfo($"Item Types: {string.Join(", ", okayNames)}");
-        }
 
-        private static bool init = false;
+            typeof(OptionInterface.ConfigHolder).GetMethod("Reload", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Invoke(poi.config, null);
+        }
 
         public static PhobiaPlugin instance;
 
