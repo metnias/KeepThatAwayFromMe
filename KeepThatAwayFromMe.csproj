@@ -34,10 +34,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\RWDownpour\Assembly-CSharp.dll</HintPath>
-    </Reference>
     <Reference Include="BepInEx, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\RWDownpour\BepInEx.dll</HintPath>
@@ -45,6 +41,9 @@
     <Reference Include="HOOKS-Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\RWDownpour\HOOKS-Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PUBLIC-Assembly-CSharp">
+      <HintPath>..\References\RWDownpour\PUBLIC-Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

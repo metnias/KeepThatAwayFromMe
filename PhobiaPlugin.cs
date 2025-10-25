@@ -3,14 +3,20 @@ using KeepThatAwayFromMe;
 using MoreSlugcats;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Security;
+using System.Security.Permissions;
 using Watcher;
 
 #region Assembly attributes
 
+#pragma warning disable CS0618
 [assembly: AssemblyVersion(PhobiaPlugin.PLUGIN_VERSION)]
 [assembly: AssemblyFileVersion(PhobiaPlugin.PLUGIN_VERSION)]
 [assembly: AssemblyTitle(PhobiaPlugin.PLUGIN_NAME + " (" + PhobiaPlugin.PLUGIN_ID + ")")]
 [assembly: AssemblyProduct(PhobiaPlugin.PLUGIN_NAME)]
+[module: UnverifiableCode]
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
+#pragma warning restore CS0618
 
 #endregion Assembly attributes
 
@@ -22,7 +28,7 @@ namespace KeepThatAwayFromMe
     {
         public const string PLUGIN_ID = "com.rainworldgame.keepthatawayfromme.plugin";
         public const string PLUGIN_NAME = "KeepThatAwayFromMe";
-        public const string PLUGIN_VERSION = "1.1.0.7";
+        public const string PLUGIN_VERSION = "1.1.0.8";
 
         public void Awake()
         {

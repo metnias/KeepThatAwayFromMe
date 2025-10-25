@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace KeepThatAwayFromMe
 {
@@ -24,6 +25,8 @@ namespace KeepThatAwayFromMe
 
             On.FliesRoomAI.Update += FliesRoomAIPatch;
             On.Room.PlaceQuantifiedCreaturesInRoom += PlaceQuantifiedCreaturesInRoomPatch;
+
+            try { HookTowerCrab(); } catch { }
         }
 
         private static void StayInDen(On.AbstractCreature.orig_ctor orig, AbstractCreature self,
@@ -263,6 +266,22 @@ namespace KeepThatAwayFromMe
         {
             if (SpearBanned() && newMode == Weapon.Mode.StuckInWall) { self.mode = Weapon.Mode.StuckInWall; return; }
             orig(self, newMode);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void HookTowerCrab()
+        {
+            On.Watcher.TowerCrabSpawner.ctor += TowerCrabFix;
+        }
+
+        private static void TowerCrabFix(On.Watcher.TowerCrabSpawner.orig_ctor orig, Watcher.TowerCrabSpawner self, Room room, PlacedObject pObj)
+        {
+            orig(self, room, pObj);
+            if (PhobiaPlugin.bannedCritTypes.Contains(Watcher.WatcherEnums.CreatureTemplateType.TowerCrab))
+            {
+                self.spawnCooldown = int.MaxValue;
+                self.shouldSpawnInitialCrabs = false;
+            }
         }
     }
 }
