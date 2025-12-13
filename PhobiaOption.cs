@@ -357,7 +357,7 @@ namespace KeepThatAwayFromMe
             if (ModManager.MSC)
             {
                 // Artificer Check
-                if (PhobiaPlugin.bannedCritTypes.Contains(CreatureTemplate.Type.Scavenger))
+                if (PhobiaPlugin.IsCritBanned(CreatureTemplate.Type.Scavenger))
                 {
                     string o = "ban-artificer-softlock-warning", t = Translate(o);
                     if (o == t) t = "Warning!<LINE><LINE>Banning Scavenger will softlock Artificer Campaign.";
@@ -365,7 +365,7 @@ namespace KeepThatAwayFromMe
                     return;
                 }
                 // Spearmaster Check
-                if (PhobiaPlugin.bannedObjTypes.Contains(AbstractPhysicalObject.AbstractObjectType.Spear))
+                if (PhobiaPlugin.IsObjBanned(AbstractPhysicalObject.AbstractObjectType.Spear))
                 {
                     string o = "ban-spearmaster-softlock-warning", t = Translate(o);
                     if (o == t) t = "Warning!<LINE><LINE>Banning Spear will softlock Spearmaster runs.";

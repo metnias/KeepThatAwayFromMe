@@ -28,7 +28,7 @@ namespace KeepThatAwayFromMe
     {
         public const string PLUGIN_ID = "com.rainworldgame.keepthatawayfromme.plugin";
         public const string PLUGIN_NAME = "KeepThatAwayFromMe";
-        public const string PLUGIN_VERSION = "1.1.0.8";
+        public const string PLUGIN_VERSION = "1.1.0.9";
 
         public void Awake()
         {
@@ -117,7 +117,9 @@ namespace KeepThatAwayFromMe
         public static HashSet<CreatureTemplate.Type> bannedCritTypes = new HashSet<CreatureTemplate.Type>();
         public static Configurable<bool>[] critTypesBan = new Configurable<bool>[0];
 
-        public static bool IsCritBanned(CreatureTemplate ct) => bannedCritTypes.Contains(ct.type);
+        public static bool IsCritBanned(CreatureTemplate ct) => IsCritBanned(ct.type);
+
+        public static bool IsCritBanned(CreatureTemplate.Type type) => bannedCritTypes.Contains(type);
 
         public static bool IsValidCritType(CreatureTemplate.Type type)
         {
@@ -150,7 +152,9 @@ namespace KeepThatAwayFromMe
         public static HashSet<AbstractPhysicalObject.AbstractObjectType> bannedObjTypes = new HashSet<AbstractPhysicalObject.AbstractObjectType>();
         public static Configurable<bool>[] objTypesBan = new Configurable<bool>[0];
 
-        public static bool IsObjBanned(AbstractPhysicalObject obj) => bannedObjTypes.Contains(obj.type);
+        public static bool IsObjBanned(AbstractPhysicalObject obj) => IsObjBanned(obj.type);
+
+        public static bool IsObjBanned(AbstractPhysicalObject.AbstractObjectType type) => bannedObjTypes.Contains(type);
 
         public static bool IsValidObjType(AbstractPhysicalObject.AbstractObjectType type)
         {

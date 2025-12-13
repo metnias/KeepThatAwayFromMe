@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using MoreSlugcats;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace KeepThatAwayFromMe
@@ -22,6 +23,10 @@ namespace KeepThatAwayFromMe
             On.PhysicalObject.Update += ObjectFreeze;
             On.PlayerCarryableItem.Update += PCObjectFreeze;
             On.Spear.ChangeMode += StuckSpearFix;
+
+            On.Player.Regurgitate += GourmandRegurgitateFix;
+            On.MoreSlugcats.GourmandCombos.CraftingResults_ObjectData += CraftingResult_ObjectDataBan;
+            On.MoreSlugcats.GourmandCombos.CraftingResults_CreatureData += CraftingResults_CreatureDataBan;
 
             On.FliesRoomAI.Update += FliesRoomAIPatch;
             On.Room.PlaceQuantifiedCreaturesInRoom += PlaceQuantifiedCreaturesInRoomPatch;
@@ -187,7 +192,7 @@ namespace KeepThatAwayFromMe
 
         private static void FliesRoomAIPatch(On.FliesRoomAI.orig_Update orig, FliesRoomAI self, bool eu)
         {
-            if (PhobiaPlugin.bannedCritTypes.Contains(CreatureTemplate.Type.Fly))
+            if (PhobiaPlugin.IsCritBanned(CreatureTemplate.Type.Fly))
             {
                 foreach (var f in self.flies) f?.Destroy();
                 self.flies.Clear();
@@ -199,7 +204,7 @@ namespace KeepThatAwayFromMe
 
         private static void PlaceQuantifiedCreaturesInRoomPatch(On.Room.orig_PlaceQuantifiedCreaturesInRoom orig, Room self, CreatureTemplate.Type critType)
         {
-            if (PhobiaPlugin.bannedCritTypes.Contains(critType)) return;
+            if (PhobiaPlugin.IsCritBanned(critType)) return;
             orig(self, critType);
         }
 
@@ -260,13 +265,55 @@ namespace KeepThatAwayFromMe
             orig(self, eu);
         }
 
-        private static bool SpearBanned() => PhobiaPlugin.bannedObjTypes.Contains(AbstractPhysicalObject.AbstractObjectType.Spear);
+        private static bool SpearBanned() => PhobiaPlugin.IsObjBanned(AbstractPhysicalObject.AbstractObjectType.Spear);
 
         private static void StuckSpearFix(On.Spear.orig_ChangeMode orig, Spear self, Weapon.Mode newMode)
         {
             if (SpearBanned() && newMode == Weapon.Mode.StuckInWall) { self.mode = Weapon.Mode.StuckInWall; return; }
             orig(self, newMode);
         }
+
+        #region MSC Fix
+
+        private static void GourmandRegurgitateFix(On.Player.orig_Regurgitate orig, Player self)
+        {
+            if (self.objectInStomach == null && self.isGourmand)
+            {
+                for (int attempt = 0; attempt < 10; ++attempt)
+                {
+                    var rndItem = GourmandCombos.RandomStomachItem(self);
+                    if (rndItem is AbstractCreature ac && PhobiaPlugin.IsCritBanned(ac.creatureTemplate)) goto Invalid;
+                    if (PhobiaPlugin.IsObjBanned(rndItem)) goto Invalid;
+
+                    self.objectInStomach = rndItem;
+                    break;
+
+                Invalid:
+                    rndItem.Destroy();
+                    continue;
+                }
+                if (self.objectInStomach == null) return;
+            }
+            orig(self);
+        }
+
+        private static AbstractPhysicalObject.AbstractObjectType CraftingResult_ObjectDataBan(On.MoreSlugcats.GourmandCombos.orig_CraftingResults_ObjectData orig, Creature.Grasp graspA, Creature.Grasp graspB, bool canMakeMeals)
+        {
+            var res = orig(graspA, graspB, canMakeMeals);
+            if (PhobiaPlugin.IsObjBanned(res)) return null;
+            return res;
+        }
+
+        private static CreatureTemplate.Type CraftingResults_CreatureDataBan(On.MoreSlugcats.GourmandCombos.orig_CraftingResults_CreatureData orig, Creature.Grasp graspA, Creature.Grasp graspB)
+        {
+            var res = orig(graspA, graspB);
+            if (PhobiaPlugin.IsCritBanned(res)) return null;
+            return res;
+        }
+
+        #endregion MSC Fix
+
+        #region Watcher Fix
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void HookTowerCrab()
@@ -277,11 +324,13 @@ namespace KeepThatAwayFromMe
         private static void TowerCrabFix(On.Watcher.TowerCrabSpawner.orig_ctor orig, Watcher.TowerCrabSpawner self, Room room, PlacedObject pObj)
         {
             orig(self, room, pObj);
-            if (PhobiaPlugin.bannedCritTypes.Contains(Watcher.WatcherEnums.CreatureTemplateType.TowerCrab))
+            if (PhobiaPlugin.IsCritBanned(Watcher.WatcherEnums.CreatureTemplateType.TowerCrab))
             {
                 self.spawnCooldown = int.MaxValue;
                 self.shouldSpawnInitialCrabs = false;
             }
         }
+
+        #endregion Watcher Fix
     }
 }
