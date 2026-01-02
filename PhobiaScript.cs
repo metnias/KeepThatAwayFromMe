@@ -24,14 +24,31 @@ namespace KeepThatAwayFromMe
             On.PlayerCarryableItem.Update += PCObjectFreeze;
             On.Spear.ChangeMode += StuckSpearFix;
 
-            On.Player.Regurgitate += GourmandRegurgitateFix;
-            On.MoreSlugcats.GourmandCombos.CraftingResults_ObjectData += CraftingResult_ObjectDataBan;
-            On.MoreSlugcats.GourmandCombos.CraftingResults_CreatureData += CraftingResults_CreatureDataBan;
-
             On.FliesRoomAI.Update += FliesRoomAIPatch;
             On.Room.PlaceQuantifiedCreaturesInRoom += PlaceQuantifiedCreaturesInRoomPatch;
 
-            try { HookTowerCrab(); } catch { }
+            On.Player.Regurgitate += GourmandRegurgitateFix;
+            if (ModManager.MSC)
+            {
+                OnMSCEnabled();
+            }
+
+            if (ModManager.Watcher)
+            {
+                try { HookTowerCrab(); } catch { }
+            }
+        }
+
+        public static void OnMSCEnabled()
+        {
+            On.MoreSlugcats.GourmandCombos.CraftingResults_ObjectData += CraftingResult_ObjectDataBan;
+            On.MoreSlugcats.GourmandCombos.CraftingResults_CreatureData += CraftingResults_CreatureDataBan;
+        }
+
+        public static void OnMSCDisabled()
+        {
+            On.MoreSlugcats.GourmandCombos.CraftingResults_ObjectData -= CraftingResult_ObjectDataBan;
+            On.MoreSlugcats.GourmandCombos.CraftingResults_CreatureData -= CraftingResults_CreatureDataBan;
         }
 
         private static void StayInDen(On.AbstractCreature.orig_ctor orig, AbstractCreature self,

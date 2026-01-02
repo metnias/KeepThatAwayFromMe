@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Logging;
 using KeepThatAwayFromMe;
 using MoreSlugcats;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace KeepThatAwayFromMe
     {
         public const string PLUGIN_ID = "com.rainworldgame.keepthatawayfromme.plugin";
         public const string PLUGIN_NAME = "KeepThatAwayFromMe";
-        public const string PLUGIN_VERSION = "1.1.0.9";
+        public const string PLUGIN_VERSION = "1.1.0.10";
 
         public void Awake()
         {
@@ -53,6 +54,8 @@ namespace KeepThatAwayFromMe
             MachineConnector.SetRegisteredOI("keepthatawayfromme", poi);
             //foreach (KeyValuePair<string, ConfigurableBase> p in poi.config.configurables)
             //    instance.Logger.LogInfo($"{p.Value.key}: {ValueConverter.ConvertToString(p.Value.BoxedValue, p.Value.settingType)} {p.Value.defaultValue}");
+
+            lastMSCEnabled = ModManager.MSC;
         }
 
         private static void PostInit(On.RainWorld.orig_PostModsInit orig, RainWorld rw) // On.RainWorld.orig_OnModsInit orig, RainWorld rw
@@ -65,6 +68,29 @@ namespace KeepThatAwayFromMe
             instance.Logger.LogMessage($"Banned Crits: {bannedCritTypes.Count}, Banned Items: {bannedObjTypes.Count}");
             //foreach (KeyValuePair<string, ConfigurableBase> p in poi.config.configurables)
             //    instance.Logger.LogInfo($"{p.Value.key}: {ValueConverter.ConvertToString(p.Value.BoxedValue, p.Value.settingType)} {p.Value.defaultValue}");
+        }
+
+        private static bool lastMSCEnabled;
+        //private static bool lastWatcherEnabled;
+
+        private static void OnModsEnabled(On.RainWorld.orig_OnModsEnabled orig, RainWorld rw, ModManager.Mod[] newlyEnabledMods)
+        {
+            orig(rw, newlyEnabledMods);
+            if (!lastMSCEnabled && ModManager.MSC)
+            {
+                PhobiaScript.OnMSCEnabled();
+                lastMSCEnabled = ModManager.MSC;
+            }
+        }
+
+        private static void OnModsDisabled(On.RainWorld.orig_OnModsDisabled orig, RainWorld rw, ModManager.Mod[] newlyDisabledMods)
+        {
+            orig(rw, newlyDisabledMods);
+            if (lastMSCEnabled && !ModManager.MSC)
+            {
+                PhobiaScript.OnMSCDisabled();
+                lastMSCEnabled = ModManager.MSC;
+            }
         }
 
         /*
